@@ -16,6 +16,15 @@ where MESSAGE is a HEXA string encoded. Can be 2 to 24 characters representing 1
 
 Example : 'sendsigfox 00AA55BF' to send the 4 bytes 0x00 0xAA 0x55 0xBF
 
+##### Prerequist
+
+Disable Raspberry Pi terminal on serial port with raspi-config utility:
+sudo raspi-config
+9 Advanced Options >> A8 Serial >> NO
+
+Install pyserial
+sudo apt-get install python-serial
+
 ##### License
 
 MIT License / read license.txt

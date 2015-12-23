@@ -57,7 +57,15 @@ ser = serial.Serial(
         stopbits=serial.STOPBITS_ONE,
         bytesize=serial.EIGHTBITS
 )
-ser.open()
+
+if(ser.isOpen() == True): 
+    ser.close()
+
+try:
+    ser.open()
+except serial.SerialException as e:
+    sys.stderr.write("Could not open serial port {}: {}\n".format(ser.name, e))
+    sys.exit(1)
 
 ser.write('AT\r')
 
