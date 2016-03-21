@@ -50,8 +50,14 @@ def WaitFor(ser, s, timeOut):
 
 print('Sending SigFox Message...\n')
 
+portName = '/dev/ttyAMA0'
+if len(sys.argv) == 3:
+    portName = sys.argv[2]
+
+print('Serial port : ' + portName + '\n')
+
 ser = serial.Serial(
-        port='/dev/ttyAMA0',
+        port=portName,
         baudrate=9600,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
