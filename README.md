@@ -10,11 +10,15 @@ The script is a simple python script used to send data.
 ##### Usage
 
 The script can be used simply by calling:
-'sendsigfox MESSAGE'
+'sendsigfox MESSAGE [path/to/serial]'
+
+Second parameter is optional.
  
 where MESSAGE is a HEXA string encoded. Can be 2 to 24 characters representing 1 to 12 bytes.
 
-Example : 'sendsigfox 00AA55BF' to send the 4 bytes 0x00 0xAA 0x55 0xBF
+Examples :
+- 'sendsigfox 00AA55BF' to send the 4 bytes 0x00 0xAA 0x55 0xBF
+- 'sendsigfox CCDD /dev/ttyS0' to send the 2 bytes 0xCC 0xDD over port /dev/ttyS0
 
 ##### Prerequist
 
