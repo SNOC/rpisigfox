@@ -30,41 +30,45 @@ def putc(data, timeout=1):
     ser.write(data)
     sleep(0.001) # give device time to prepare new buffer and start sending it
 
-def WaitFor(ser, s, timeOut):
-        nbMax = 0
-        ser.timeout = timeOut
-        currentMsg = ''
-        while currentMsg.endswith(s) != True :
-            # should add a try catch here
-            c=ser.read()
-            if c != '' :
-                currentMsg += c
-            else :
-                print 'timeout waiting for ' + s
-                return False
-            nbMax = nbMax + 1
-            if nbMax > 150:
-		print 'Timeout expired'
-		return False
-        return True
+def WaitFor(success, failure, timeOut):
+    return ReceiveUntil(success, failure, timeOut) != ''
 
-print('Sending SigFox Message...\n')
+def ReceiveUntil(success, failure, timeOut):
+	iterCount = timeOut / 0.1
+	ser.timeout = 0.1
+	currentMsg = ''
+	while iterCount >= 0 and success not in currentMsg and failure not in currentMsg :
+		sleep(0.1)
+		while ser.inWaiting() > 0 : # bunch of data ready for reading
+			c = ser.read()
+			currentMsg += c
+		iterCount -= 1
+	if success in currentMsg :
+		return currentMsg
+	elif failure in currentMsg :
+		print 'Failure (' + currentMsg.replace('\r\n', '') + ')'
+	else :
+		print 'Receive timeout (' + currentMsg.replace('\r\n', '') + ')'
+	return ''
 
+print 'Sending SigFox Message...'
+
+# allow serial port choice from parameter - default is /dev/ttyAMA0
 portName = '/dev/ttyAMA0'
 if len(sys.argv) == 3:
     portName = sys.argv[2]
 
-print('Serial port : ' + portName + '\n')
+print 'Serial port : ' + portName
 
 ser = serial.Serial(
-        port=portName,
-        baudrate=9600,
-        parity=serial.PARITY_NONE,
-        stopbits=serial.STOPBITS_ONE,
-        bytesize=serial.EIGHTBITS
+	port=portName,
+	baudrate=9600,
+	parity=serial.PARITY_NONE,
+	stopbits=serial.STOPBITS_ONE,
+	bytesize=serial.EIGHTBITS
 )
 
-if(ser.isOpen() == True): 
+if(ser.isOpen() == True): # on some platforms the serial port needs to be closed first 
     ser.close()
 
 try:
@@ -74,21 +78,15 @@ except serial.SerialException as e:
     sys.exit(1)
 
 ser.write('AT\r')
+if WaitFor('OK', 'ERROR', 3) :
+	print('SigFox Modem OK')
 
-if (WaitFor(ser, 'OK', 3)):
-  print('SigFox Modem OK')
-else:
-  print('SigFox Modem Error')
-  ser.close()
-  exit()
+	ser.write("AT$SS={0}\r".format(sys.argv[1]))
+	print('Sending ...')
+	if WaitFor('OK', 'ERROR', 15) :
+		print('OK Message sent')
 
-ser.write("AT$SS={0}\r".format(sys.argv[1]))
-print('Sending ...')
-if (WaitFor(ser, 'OK', 15)):
-  print('OK Message sent')
 else:
-  print('Error Sending message')
-  ser.close()
-  exit()
+	print 'SigFox Modem Error'
 
 ser.close()
