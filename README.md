@@ -7,18 +7,18 @@ You can purchase the board on [YADOM.FR](http://yadom.fr/carte-rpisigfox.html).
 
 Two python scripts are provided :
 
-- sendsigfox sends data over the Sigfox network.
+- sendsigfox.py sends data over the Sigfox network.
 
-- sendreceivesigfox sends data with a downlink request. Downlink messages are 8 bytes long. BEWARE : the Sigfox operator may bill downlink messages, please refer to your contract.
+- sendreceivesigfox.py sends data with a downlink message request. Downlink messages are 8 bytes long. BEWARE : Sigfox operators may bill downlink messages, please refer to your contract.
 
 ##### Usage
 
 'sendsigfox MESSAGE [path/to/serial]'
 'sendreceivesigfox MESSAGE [path/to/serial]'
  
-where MESSAGE is an HEXA encoded string, 2 to 24 characters representing 1 to 12 bytes.
+- MESSAGE is an HEXA encoded string; 2 to 24 characters representing 1 to 12 bytes.
 
-Second parameter is optional.
+- Second parameter an the optional path to the serial port, default is /dev/ttyAMA0.
 
 Examples :
 - 'sendsigfox 00AA55BF' : sends the 4 bytes 0x00 0xAA 0x55 0xBF
