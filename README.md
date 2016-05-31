@@ -28,22 +28,27 @@ Examples :
 ##### Prerequist
 
 Disable Raspberry Pi terminal on serial port with raspi-config utility:
+
 sudo raspi-config
+
 9 Advanced Options >> A8 Serial >> NO
 
 Install pyserial
+
 sudo apt-get install python-serial
 
 ##### Pi3 requirements
 
-In '/boot/config.txt' disable if present 'dtoverlay=pi3-miniuart-bt' :
-\#dtoverlay=pi3-miniuart-bt
+In '/boot/config.txt' disable if present 'dtoverlay=pi3-miniuart-bt' by adding a '\#' character at line begining
 
 Add if necessary :
+
 dtoverlay=pi3-disable-bt
+
 enable_uart=1
 
 Then reboot : 
+
 sudo reboot
 
 Serial port to use is the script's default one : /dev/ttyAMA0
