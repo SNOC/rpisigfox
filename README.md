@@ -37,7 +37,7 @@ sudo apt-get install python-serial
 ##### Pi3 requirements
 
 In '/boot/config.txt' disable if present 'dtoverlay=pi3-miniuart-bt' :
-#dtoverlay=pi3-miniuart-bt
+\#dtoverlay=pi3-miniuart-bt
 
 Add if necessary :
 dtoverlay=pi3-disable-bt
