@@ -34,6 +34,20 @@ sudo raspi-config
 Install pyserial
 sudo apt-get install python-serial
 
+##### Pi3 requirements
+
+In '/boot/config.txt' disable if present 'dtoverlay=pi3-miniuart-bt' :
+#dtoverlay=pi3-miniuart-bt
+
+Add if necessary :
+dtoverlay=pi3-disable-bt
+enable_uart=1
+
+Then reboot : 
+sudo reboot
+
+Serial port to use is the script's default one : /dev/ttyAMA0
+
 ##### License
 
 MIT License / read license.txt
